@@ -1,0 +1,17 @@
+main
+	__CC2DW
+		____DoICP
+	UART1_Init
+	UART1_Write_Text
+		UART1_Write
+	spi_transfer
+	IntToStr
+		WordToStr
+			Div_16X16_U
+	get_time
+		UART1_Write_Text
+			UART1_Write
+		spi_transfer
+		IntToStr
+			WordToStr
+				Div_16X16_U
