@@ -4,14 +4,9 @@ main
 	UART1_Init
 	UART1_Write_Text
 		UART1_Write
-	spi_transfer
-	IntToStr
-		WordToStr
-			Div_16X16_U
-	get_time
+	RTC_init
+		spi_transfer
+	setTime
 		UART1_Write_Text
 			UART1_Write
 		spi_transfer
-		IntToStr
-			WordToStr
-				Div_16X16_U

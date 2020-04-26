@@ -234,6 +234,8 @@ cm2con0
 cm2con1
 comfrem
 compare_double
+convertvaluein
+convertvalueout
 cren
 cren_bit
 csrc
@@ -495,6 +497,7 @@ portc
 portd
 porte
 pr2
+print_date
 prsen
 prsen_bit
 ps0
@@ -644,6 +647,7 @@ rp1
 rp1_bit
 rsen
 rsen_bit
+rtc_init
 rtrim
 rx9
 rx9_bit
@@ -666,6 +670,7 @@ setfdz32
 setfov32
 setfun32
 setiov3224
+settime
 shorttohex
 shorttostr
 shorttostrwithzeros
