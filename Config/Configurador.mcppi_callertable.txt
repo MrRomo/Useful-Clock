@@ -7,6 +7,14 @@ main
 	RTC_init
 		spi_transfer
 	setTime
-		UART1_Write_Text
-			UART1_Write
 		spi_transfer
+		convertValueOUT
+			Div_8X8_U
+			Mul_8X8_U
+	readTime
+		spi_transfer
+	convertValueIN
+		Mul_8X8_U
+	IntToStr
+		WordToStr
+			Div_16X16_U

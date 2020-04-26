@@ -1,26 +1,17 @@
 0	1	mikroCPIC1618.exe -MSF -DBG -pP16F887 -DL -O11111114 -fo4 -N"C:\Users\wwrik\Documents\Code\Micros\Reloj SPI\Config\Configurador.mcppi" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -SP"C:\Users\wwrik\Documents\Code\Micros\Reloj SPI\Config\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -IP"C:\Users\wwrik\Documents\Code\Micros\Reloj SPI\Config\" "Configurador.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CString.mcl" "__Lib_Conversions.mcl" "__Lib_UART_c67.mcl"	 
 hint: 0	1139	Available RAM: 352 [bytes], Available ROM: 8192 [bytes]	 
 diagnostics: 0	122	Compilation Started	Configurador.c
-warning: 34	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 35	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 36	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 37	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 38	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 39	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 40	1508	Implicit conversion of int to ptr	Configurador.c
-warning: 41	1508	Implicit conversion of int to ptr	Configurador.c
-hint: 46	1163	Variable 'text' has been declared, but not used	Configurador.c
-warning: 83	1509	Generated baud rate is 9615 bps (error = 0.16 percent)	Configurador.c
-hint: 82	1163	Variable 'text' has been declared, but not used	Configurador.c
-diagnostics: 98	123	Compiled Successfully	Configurador.c
-hint: 25	1164	Variable 'convertedVal' has been eliminated by optimizer	Configurador.c
-hint: 29	1164	Variable 'convertedVal' has been eliminated by optimizer	Configurador.c
-hint: 45	1164	Variable 'i' has been eliminated by optimizer	Configurador.c
-hint: 73	1164	Variable 'config' has been eliminated by optimizer	Configurador.c
-diagnostics: 0	127	All files Compiled in 62 ms	 
-hint: 0	1144	Used RAM (bytes): 46 (13%)  Free RAM (bytes): 306 (87%)	Used RAM (bytes): 46 (13%)  Free RAM (bytes): 306 (87%)
-hint: 0	1144	Used ROM (program words): 226 (3%)  Free ROM (program words): 7966 (97%)	Used ROM (program words): 226 (3%)  Free ROM (program words): 7966 (97%)
+warning: 66	1509	Generated baud rate is 9615 bps (error = 0.16 percent)	Configurador.c
+hint: 64	1163	Variable 'sec' has been declared, but not used	Configurador.c
+hint: 65	1163	Variable 'time2' has been declared, but not used	Configurador.c
+diagnostics: 92	123	Compiled Successfully	Configurador.c
+hint: 18	1164	Variable 'convertedVal' has been eliminated by optimizer	Configurador.c
+hint: 23	1164	Variable 'convertedVal' has been eliminated by optimizer	Configurador.c
+hint: 54	1164	Variable 'config' has been eliminated by optimizer	Configurador.c
+diagnostics: 0	127	All files Compiled in 78 ms	 
+hint: 0	1144	Used RAM (bytes): 63 (18%)  Free RAM (bytes): 289 (82%)	Used RAM (bytes): 63 (18%)  Free RAM (bytes): 289 (82%)
+hint: 0	1144	Used ROM (program words): 644 (8%)  Free ROM (program words): 7548 (92%)	Used ROM (program words): 644 (8%)  Free ROM (program words): 7548 (92%)
 diagnostics: 0	125	Project Linked Successfully	Configurador.mcppi
-diagnostics: 0	128	Linked in 32 ms	 
-diagnostics: 0	129	Project 'Configurador.mcppi' completed: 110 ms	 
-diagnostics: 0	103	Finished successfully: 25 abr. 2020, 23:26:35	Configurador.mcppi
+diagnostics: 0	128	Linked in 31 ms	 
+diagnostics: 0	129	Project 'Configurador.mcppi' completed: 125 ms	 
+diagnostics: 0	103	Finished successfully: 26 abr. 2020, 14:19:49	Configurador.mcppi

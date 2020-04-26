@@ -3,74 +3,55 @@
 #define WRITE_CONTROL_REG 0x8E
 #define READ_CONTROL_REG 0x0E
 #define WRITE_TIME_REG 0x80
+#define WRITE_DATE_REG 0x84
 #define READ_TIME_REG 0x00
+#define READ_DATE_REG 0x04
+typedef unsigned char byte;
 
-unsigned char spi_transfer(unsigned char info){
+byte spi_transfer(byte info){
    SSPBUF = info;
    while(!SSPSTAT.BF);
-   SSPSTAT.BF = 0;
    return SSPBUF;
 }
-typedef struct timeParameters{
-  unsigned char ss ;
-  unsigned char mm ;
-  unsigned char hh ;
-  unsigned char dy ;
-  unsigned char d ;
-  unsigned char m ;
-  unsigned char y ;
-}timeParameters_t ;
 
-unsigned char convertValueIN(unsigned char value){
-  unsigned char convertedVal = value - 6 * (value >> 4) ;
-  return convertedVal ;
-}
-unsigned char convertValueOUT(unsigned char value){
-  unsigned char convertedVal = value + 6 * (value / 10);
+byte convertValueIN(byte value){
+  byte convertedVal = value - 6 * (value >> 4);
   return convertedVal ;
 }
 
-void print_date(timeParameters_t * dataTime){
-   UART1_Write_Text(dataTime->ss);
-   UART1_Write_Text(dataTime->mm);
-   UART1_Write_Text(dataTime->hh);
-   UART1_Write_Text(dataTime->dy);
-   UART1_Write_Text(dataTime->d);
-   UART1_Write_Text(dataTime->m);
-   UART1_Write_Text(dataTime->y);
-   UART1_Write_Text(dataTime->d);
+byte convertValueOUT(byte value){
+  byte convertedVal = value +6 * (value / 10);
+  return convertedVal ;
 }
-void get_time(){
-   timeParameters_t * timeVals;
+
+
+void setTime(byte * info){
    char i = 0;
-   char text [10];
    CS = 0;
-   Delay_ms(100);
-   UART1_Write_Text("LEYENDO TIEMPO");
-   spi_transfer(READ_TIME_REG) ;
-   timeVals->ss = convertValueIN(spi_transfer(0x00));
-   timeVals->mm = convertValueIN(spi_transfer(0x01));
-   // timeVals->hh = convertValueIN(spi_transfer(0x00));
-   // timeVals->dy = convertValueIN(spi_transfer(0x00));
-   // timeVals->d = convertValueIN(spi_transfer(0x00));
-   // timeVals->m = convertValueIN(spi_transfer(0x00));
-   // timeVals->y = convertValueIN(spi_transfer(0x00));
+   Delay_ms(10);
+   spi_transfer(info[0]);
+   for (i = 1; i < 4; i++)
+   {  
+     spi_transfer(convertValueOUT(info[i]));
+   }
    CS = 1;
-   // print_date(timeVals);
+   Delay_ms(10);
 }
-void setTime(){
-   UART1_Write_Text("Seteando el tiempo");
+void readTime(byte * currentTime){
+   char i = 0;
    CS = 0;
-   Delay_ms(100);
-   spi_transfer(0x81);
-   spi_transfer(0x19);
+   Delay_ms(10);
+   spi_transfer(currentTime[0]);
+   for (i = 1; i < 4; i++)
+   {  
+     currentTime[i] = spi_transfer(0x00);
+   }
    CS = 1;
-   Delay_ms(10) ;
+   Delay_ms(10);
 }
-
 
 void RTC_init(char freq){
-   unsigned char config;
+   byte config;
    CS = 0;
    spi_transfer(READ_CONTROL_REG);
    config = spi_transfer(0x00);
@@ -79,20 +60,33 @@ void RTC_init(char freq){
 }
 
 void main() {
-   char text[10];
+   byte text[10], i;
+   byte date[] = {0x84,26,04,20}, date2[4] = {0x00}, sec;
+   byte time[] = {0x80,59,30,05}, time2[4];
    UART1_Init(9600);
    UART1_Write_Text("inicio de la prueba");
    TRISC.F3 = 0; //CLK SPI
    TRISC.F5 = 0; //MOSI - SDO
    TRISC.F4 = 1; //MISO - SDI
    TRISD.F0 = 0; //CS
-   SSPSTAT = 0X40;
+   SSPSTAT = 0X00;
    SSPCON =  0X20;
    CS = 1;
    Delay_ms(2000);
    RTC_init(1);
-   setTime();
+   setTime(date);
+   setTime(time);
+   Delay_ms(5000);
    while(1){
-
+      readTime(date2);
+      UART1_Write_Text("[");
+      for (i = 3; i > 0; i--)
+      {
+        IntToStr(convertValueIN(date2[i]), text);
+        UART1_Write_Text(text);
+      }
+      UART1_Write_Text("]");
+      Delay_ms(500);
+      
    }
 }
