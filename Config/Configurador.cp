@@ -61,9 +61,9 @@ void RTC_init(char freq){
 }
 
 void main() {
- byte text[10], i;
- byte date[] = {0x84,26,04,20}, date2[4] = {0x00}, sec;
- byte time[] = {0x80,59,30,05}, time2[4];
+ byte text[10], i, buff[10], check = 0;
+ byte date[] = {0x84,26,04,20}, date2[4] = {0x04};
+ byte time[] = {0x80,59,30,05}, time2[4] = {0x00};
  UART1_Init(9600);
  UART1_Write_Text("inicio de la prueba");
  TRISC.F3 = 0;
@@ -78,16 +78,28 @@ void main() {
  setTime(date);
  setTime(time);
  Delay_ms(5000);
- while(1){
+ while (1) {
+ check = 0;
+ if(UART1_Data_Ready()){
+ check = UART1_Read();
+ if(check == 'r'){
  readTime(date2);
- UART1_Write_Text("[");
+ readTime(time2);
  for (i = 3; i > 0; i--)
  {
- IntToStr(convertValueIN(date2[i]), text);
- UART1_Write_Text(text);
+ UART1_Write(convertValueIN(time2[i]));
+ UART1_Write(convertValueIN(date2[i]));
  }
- UART1_Write_Text("]");
- Delay_ms(500);
-
+ }
+ if(check == 's'){
+ readTime(date2);
+ readTime(time2);
+ for (i = 3; i > 0; i--)
+ {
+ UART1_Write(convertValueIN(time2[i]));
+ UART1_Write(convertValueIN(date2[i]));
+ }
+ }
+ }
  }
 }

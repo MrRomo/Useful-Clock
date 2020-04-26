@@ -240,7 +240,8 @@ L_end_RTC_init:
 _main:
 
 ;Configurador.c,62 :: 		void main() {
-;Configurador.c,64 :: 		byte date[] = {0x84,26,04,20}, date2[4] = {0x00}, sec;
+;Configurador.c,63 :: 		byte text[10], i, buff[10], check = 0;
+	CLRF       main_check_L0+0
 	MOVLW      132
 	MOVWF      main_date_L0+0
 	MOVLW      26
@@ -249,7 +250,8 @@ _main:
 	MOVWF      main_date_L0+2
 	MOVLW      20
 	MOVWF      main_date_L0+3
-	CLRF       main_date2_L0+0
+	MOVLW      4
+	MOVWF      main_date2_L0+0
 	CLRF       main_date2_L0+1
 	CLRF       main_date2_L0+2
 	CLRF       main_date2_L0+3
@@ -261,6 +263,10 @@ _main:
 	MOVWF      main_time_L0+2
 	MOVLW      5
 	MOVWF      main_time_L0+3
+	CLRF       main_time2_L0+0
+	CLRF       main_time2_L0+1
+	CLRF       main_time2_L0+2
+	CLRF       main_time2_L0+3
 ;Configurador.c,66 :: 		UART1_Init(9600);
 	MOVLW      25
 	MOVWF      SPBRG+0
@@ -328,25 +334,51 @@ L_main14:
 	DECFSZ     R11+0, 1
 	GOTO       L_main14
 	NOP
-;Configurador.c,80 :: 		while(1){
+;Configurador.c,80 :: 		while (1) {
 L_main15:
-;Configurador.c,81 :: 		readTime(date2);
+;Configurador.c,81 :: 		check = 0;
+	CLRF       main_check_L0+0
+;Configurador.c,82 :: 		if(UART1_Data_Ready()){
+	CALL       _UART1_Data_Ready+0
+	MOVF       R0+0, 0
+	BTFSC      STATUS+0, 2
+	GOTO       L_main17
+;Configurador.c,83 :: 		check = UART1_Read();
+	CALL       _UART1_Read+0
+	MOVF       R0+0, 0
+	MOVWF      main_check_L0+0
+;Configurador.c,84 :: 		if(check == 'r'){
+	MOVF       R0+0, 0
+	XORLW      114
+	BTFSS      STATUS+0, 2
+	GOTO       L_main18
+;Configurador.c,85 :: 		readTime(date2);
 	MOVLW      main_date2_L0+0
 	MOVWF      FARG_readTime_currentTime+0
 	CALL       _readTime+0
-;Configurador.c,82 :: 		UART1_Write_Text("[");
-	MOVLW      ?lstr2_Configurador+0
-	MOVWF      FARG_UART1_Write_Text_uart_text+0
-	CALL       _UART1_Write_Text+0
-;Configurador.c,83 :: 		for (i = 3; i > 0; i--)
+;Configurador.c,86 :: 		readTime(time2);
+	MOVLW      main_time2_L0+0
+	MOVWF      FARG_readTime_currentTime+0
+	CALL       _readTime+0
+;Configurador.c,87 :: 		for (i = 3; i > 0; i--)
 	MOVLW      3
 	MOVWF      main_i_L0+0
-L_main17:
+L_main19:
 	MOVF       main_i_L0+0, 0
 	SUBLW      0
 	BTFSC      STATUS+0, 0
-	GOTO       L_main18
-;Configurador.c,85 :: 		IntToStr(convertValueIN(date2[i]), text);
+	GOTO       L_main20
+;Configurador.c,89 :: 		UART1_Write(convertValueIN(time2[i]));
+	MOVF       main_i_L0+0, 0
+	ADDLW      main_time2_L0+0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      FARG_convertValueIN_value+0
+	CALL       _convertValueIN+0
+	MOVF       R0+0, 0
+	MOVWF      FARG_UART1_Write_data_+0
+	CALL       _UART1_Write+0
+;Configurador.c,90 :: 		UART1_Write(convertValueIN(date2[i]));
 	MOVF       main_i_L0+0, 0
 	ADDLW      main_date2_L0+0
 	MOVWF      FSR
@@ -354,43 +386,68 @@ L_main17:
 	MOVWF      FARG_convertValueIN_value+0
 	CALL       _convertValueIN+0
 	MOVF       R0+0, 0
-	MOVWF      FARG_IntToStr_input+0
-	CLRF       FARG_IntToStr_input+1
-	MOVLW      main_text_L0+0
-	MOVWF      FARG_IntToStr_output+0
-	CALL       _IntToStr+0
-;Configurador.c,86 :: 		UART1_Write_Text(text);
-	MOVLW      main_text_L0+0
-	MOVWF      FARG_UART1_Write_Text_uart_text+0
-	CALL       _UART1_Write_Text+0
-;Configurador.c,83 :: 		for (i = 3; i > 0; i--)
+	MOVWF      FARG_UART1_Write_data_+0
+	CALL       _UART1_Write+0
+;Configurador.c,87 :: 		for (i = 3; i > 0; i--)
 	DECF       main_i_L0+0, 1
-;Configurador.c,87 :: 		}
-	GOTO       L_main17
-L_main18:
-;Configurador.c,88 :: 		UART1_Write_Text("]");
-	MOVLW      ?lstr3_Configurador+0
-	MOVWF      FARG_UART1_Write_Text_uart_text+0
-	CALL       _UART1_Write_Text+0
-;Configurador.c,89 :: 		Delay_ms(500);
-	MOVLW      3
-	MOVWF      R11+0
-	MOVLW      138
-	MOVWF      R12+0
-	MOVLW      85
-	MOVWF      R13+0
-L_main20:
-	DECFSZ     R13+0, 1
-	GOTO       L_main20
-	DECFSZ     R12+0, 1
-	GOTO       L_main20
-	DECFSZ     R11+0, 1
-	GOTO       L_main20
-	NOP
-	NOP
 ;Configurador.c,91 :: 		}
-	GOTO       L_main15
+	GOTO       L_main19
+L_main20:
 ;Configurador.c,92 :: 		}
+L_main18:
+;Configurador.c,93 :: 		if(check == 's'){
+	MOVF       main_check_L0+0, 0
+	XORLW      115
+	BTFSS      STATUS+0, 2
+	GOTO       L_main22
+;Configurador.c,94 :: 		readTime(date2);
+	MOVLW      main_date2_L0+0
+	MOVWF      FARG_readTime_currentTime+0
+	CALL       _readTime+0
+;Configurador.c,95 :: 		readTime(time2);
+	MOVLW      main_time2_L0+0
+	MOVWF      FARG_readTime_currentTime+0
+	CALL       _readTime+0
+;Configurador.c,96 :: 		for (i = 3; i > 0; i--)
+	MOVLW      3
+	MOVWF      main_i_L0+0
+L_main23:
+	MOVF       main_i_L0+0, 0
+	SUBLW      0
+	BTFSC      STATUS+0, 0
+	GOTO       L_main24
+;Configurador.c,98 :: 		UART1_Write(convertValueIN(time2[i]));
+	MOVF       main_i_L0+0, 0
+	ADDLW      main_time2_L0+0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      FARG_convertValueIN_value+0
+	CALL       _convertValueIN+0
+	MOVF       R0+0, 0
+	MOVWF      FARG_UART1_Write_data_+0
+	CALL       _UART1_Write+0
+;Configurador.c,99 :: 		UART1_Write(convertValueIN(date2[i]));
+	MOVF       main_i_L0+0, 0
+	ADDLW      main_date2_L0+0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      FARG_convertValueIN_value+0
+	CALL       _convertValueIN+0
+	MOVF       R0+0, 0
+	MOVWF      FARG_UART1_Write_data_+0
+	CALL       _UART1_Write+0
+;Configurador.c,96 :: 		for (i = 3; i > 0; i--)
+	DECF       main_i_L0+0, 1
+;Configurador.c,100 :: 		}
+	GOTO       L_main23
+L_main24:
+;Configurador.c,101 :: 		}
+L_main22:
+;Configurador.c,102 :: 		}
+L_main17:
+;Configurador.c,103 :: 		}
+	GOTO       L_main15
+;Configurador.c,104 :: 		}
 L_end_main:
 	GOTO       $+0
 ; end of _main

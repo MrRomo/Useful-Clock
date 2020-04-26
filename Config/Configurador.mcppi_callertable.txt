@@ -11,10 +11,10 @@ main
 		convertValueOUT
 			Div_8X8_U
 			Mul_8X8_U
+	UART1_Data_Ready
+	UART1_Read
 	readTime
 		spi_transfer
 	convertValueIN
 		Mul_8X8_U
-	IntToStr
-		WordToStr
-			Div_16X16_U
+	UART1_Write
