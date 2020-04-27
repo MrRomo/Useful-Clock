@@ -19,19 +19,23 @@ fromSys = False
 class RefreshClock(QThread):
     change_value = pyqtSignal(str)
     def run(self):
+        self.fromSys = True
         watch = Watch()
         while 1:
-            date = watch.getTimeStr() 
-            self.change_value.emit(date)
+            if(self.fromSys):
+                date = watch.getTimeStr() 
+                self.change_value.emit(date)
             delay(1)
 
 class ReceiveTime(QThread):
     change_value = pyqtSignal(str)
     def run(self):
-        serialManager = SerialManager()
+        self.fromSys = True
+        self.serialManager = SerialManager()
         while(1):
-            date = serialManager.receive()
-            self.change_value.emit(date)
+            if(not(self.fromSys)):
+                date = self.serialManager.receive()
+                self.change_value.emit(date)
             delay(0.5)
     
 
@@ -101,30 +105,28 @@ class Ui_Dialog(object):
         self.updateTimeThread.start()
 
         self.receiveTimeThread = ReceiveTime()
-        self.receiveTimeThread.change_value.connect(self.updateTime2)
+        self.receiveTimeThread.change_value.connect(self.updateTime)
         self.receiveTimeThread.start()
+
+
         self.pushButton_5.clicked.connect(self.updateSource)
+        self.pushButton_2.clicked.connect(self.sendTime)
 
     def updateSource(self):
-        self.fromSys = not(self.fromSys)
+        self.receiveTimeThread.fromSys = self.updateTimeThread.fromSys = not(self.receiveTimeThread.fromSys)
 
     def updateTime(self, msg):
-        if(self.fromSys):
-            temp = msg.split('|')
-            item = self.hexBox.item(0)
-            item.setText(self.translate("Dialog", temp[0]))
-            item = self.hexBox_2.item(0)
-            item.setText(self.translate("Dialog", temp[1]))
+        temp = msg.split('|')
+        item = self.hexBox.item(0)
+        item.setText(self.translate("Dialog", temp[0]))
+        item = self.hexBox_2.item(0)
+        item.setText(self.translate("Dialog", temp[1]))
 
-    def updateTime2(self, msg):
-        if (not(self.fromSys)):
-            temp = msg.split('|')
-            item = self.hexBox.item(0)
-            item.setText(self.translate("Dialog", temp[0]))
-            item = self.hexBox_2.item(0)
-            item.setText(self.translate("Dialog", temp[1]))
-    
-    
+    def sendTime(self):
+        self.receiveTimeThread.fromSys = False
+        self.updateTimeThread.fromSys = True
+        watch = Watch()
+        self.receiveTimeThread.serialManager.send(watch.getTimeHex())
       
 
     def retranslateUi(self, Dialog):
@@ -133,7 +135,7 @@ class Ui_Dialog(object):
         self.pushButton_2.setText(_translate("Dialog", "Update"))
         self.pushButton_3.setText(_translate("Dialog", "Refresh"))
         self.pushButton_4.setText(_translate("Dialog", "Stop"))
-        self.pushButton_5.setText(_translate("Dialog", "Get Real Time"))
+        self.pushButton_5.setText(_translate("Dialog", "Switch Clock"))
         self.label.setText(_translate("Dialog", "Useful Clock"))
         __sortingEnabled = self.hexBox.isSortingEnabled()
         self.hexBox.setSortingEnabled(False)

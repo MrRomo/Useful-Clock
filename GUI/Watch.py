@@ -26,7 +26,7 @@ class Watch():
         time = datetime.datetime.now()
 
     def getTimeHex(self):
-        temp = ':{x[0]}{x[1]}{x[2]}{x[3]}{x[4]}{x[5]}'.format(x=self.getRealTime())
+        temp = '{x[0]}{x[1]}{x[2]}{x[3]}{x[4]}{x[5]}'.format(x=self.getRealTime())
         return temp
 
     def getTimeStr(self):
