@@ -43,6 +43,7 @@ class ReceiveTime(QThread):
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         self.fromSys = False
+        self.works = True
         Dialog.setObjectName("Dialog")
         Dialog.resize(400, 334)
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
@@ -116,17 +117,20 @@ class Ui_Dialog(object):
         self.receiveTimeThread.fromSys = self.updateTimeThread.fromSys = not(self.receiveTimeThread.fromSys)
 
     def updateTime(self, msg):
-        temp = msg.split('|')
-        item = self.hexBox.item(0)
-        item.setText(self.translate("Dialog", temp[0]))
-        item = self.hexBox_2.item(0)
-        item.setText(self.translate("Dialog", temp[1]))
+        if(self.works):
+            temp = msg.split('|')
+            if(len(temp)>1):
+                item = self.hexBox.item(0)
+                item.setText(self.translate("Dialog", temp[0]))
+                item = self.hexBox_2.item(0)
+                item.setText(self.translate("Dialog", temp[1]))
 
     def sendTime(self):
-        self.receiveTimeThread.fromSys = False
-        self.updateTimeThread.fromSys = True
+        self.works = False
+        self.receiveTimeThread.fromSys = self.updateTimeThread.fromSys = True
         watch = Watch()
         self.receiveTimeThread.serialManager.send(watch.getTimeHex())
+        self.works = True
       
 
     def retranslateUi(self, Dialog):

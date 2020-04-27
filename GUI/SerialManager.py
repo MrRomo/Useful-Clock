@@ -11,7 +11,7 @@ class SerialManager():
 
     def send(self, msg):
         self.isWork = 1
-        delay(2)
+        delay(0.1)
         print("enviando", msg)
         self.puerto.flushInput()
         self.puerto.write('s'.encode())

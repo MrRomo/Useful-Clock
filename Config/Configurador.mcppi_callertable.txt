@@ -8,9 +8,6 @@ main
 		spi_transfer
 	setTime
 		spi_transfer
-		convertValueOUT
-			Div_8X8_U
-			Mul_8X8_U
 	UART1_Data_Ready
 	UART1_Read
 	readTime
@@ -18,3 +15,7 @@ main
 	convertValueIN
 		Mul_8X8_U
 	UART1_Write
+	ascii2hex
+		readData
+			UART1_Data_Ready
+			UART1_Read

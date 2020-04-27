@@ -1,17 +1,18 @@
 0	1	mikroCPIC1618.exe -MSF -DBG -pP16F887 -DL -O11111114 -fo4 -N"C:\Users\wwrik\Documents\Code\Micros\Reloj SPI\Config\Configurador.mcppi" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -SP"C:\Users\wwrik\Documents\Code\Micros\Reloj SPI\Config\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -IP"C:\Users\wwrik\Documents\Code\Micros\Reloj SPI\Config\" "Configurador.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CString.mcl" "__Lib_Conversions.mcl" "__Lib_UART_c67.mcl"	 
 hint: 0	1139	Available RAM: 352 [bytes], Available ROM: 8192 [bytes]	 
 diagnostics: 0	122	Compilation Started	Configurador.c
-warning: 66	1509	Generated baud rate is 9615 bps (error = 0.16 percent)	Configurador.c
-hint: 63	1163	Variable 'text' has been declared, but not used	Configurador.c
-hint: 63	1163	Variable 'buff' has been declared, but not used	Configurador.c
-diagnostics: 104	123	Compiled Successfully	Configurador.c
+warning: 87	1509	Generated baud rate is 9615 bps (error = 0.16 percent)	Configurador.c
+hint: 84	1163	Variable 'text' has been declared, but not used	Configurador.c
+hint: 84	1163	Variable 'buff' has been declared, but not used	Configurador.c
+diagnostics: 127	123	Compiled Successfully	Configurador.c
 hint: 18	1164	Variable 'convertedVal' has been eliminated by optimizer	Configurador.c
 hint: 23	1164	Variable 'convertedVal' has been eliminated by optimizer	Configurador.c
-hint: 54	1164	Variable 'config' has been eliminated by optimizer	Configurador.c
-diagnostics: 0	127	All files Compiled in 78 ms	 
-hint: 0	1144	Used RAM (bytes): 44 (12%)  Free RAM (bytes): 308 (88%)	Used RAM (bytes): 44 (12%)  Free RAM (bytes): 308 (88%)
-hint: 0	1144	Used ROM (program words): 497 (6%)  Free ROM (program words): 7695 (94%)	Used ROM (program words): 497 (6%)  Free ROM (program words): 7695 (94%)
+hint: 41	1164	Variable 'dato' has been eliminated by optimizer	Configurador.c
+hint: 75	1164	Variable 'config' has been eliminated by optimizer	Configurador.c
+diagnostics: 0	127	All files Compiled in 63 ms	 
+hint: 0	1144	Used RAM (bytes): 52 (15%)  Free RAM (bytes): 300 (85%)	Used RAM (bytes): 52 (15%)  Free RAM (bytes): 300 (85%)
+hint: 0	1144	Used ROM (program words): 556 (7%)  Free ROM (program words): 7636 (93%)	Used ROM (program words): 556 (7%)  Free ROM (program words): 7636 (93%)
 diagnostics: 0	125	Project Linked Successfully	Configurador.mcppi
-diagnostics: 0	128	Linked in 31 ms	 
+diagnostics: 0	128	Linked in 46 ms	 
 diagnostics: 0	129	Project 'Configurador.mcppi' completed: 125 ms	 
-diagnostics: 0	103	Finished successfully: 26 abr. 2020, 17:33:27	Configurador.mcppi
+diagnostics: 0	103	Finished successfully: 26 abr. 2020, 22:39:19	Configurador.mcppi
