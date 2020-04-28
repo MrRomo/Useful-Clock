@@ -126,7 +126,7 @@ class Ui_Dialog(object):
         self.works = False
         self.receiveTimeThread.fromSys = self.updateTimeThread.fromSys = True
         watch = Watch()
-        self.receiveTimeThread.serialManager.send(watch.getTimeHex())
+        self.receiveTimeThread.serialManager.send(watch.getRealTime())
         self.works = True
       
 
