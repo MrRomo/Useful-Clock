@@ -1,21 +1,17 @@
 main
 	__CC2DW
 		____DoICP
-	UART1_Init
-	UART1_Write_Text
-		UART1_Write
-	RTC_init
-		spi_transfer
+	initConfig
+		UART1_Init
 	setTime
 		spi_transfer
 	UART1_Data_Ready
 	UART1_Read
 	readTime
 		spi_transfer
-	convertValueIN
-		Mul_8X8_U
 	UART1_Write
-	ascii2hex
-		readData
-			UART1_Data_Ready
-			UART1_Read
+	readData
+		UART1_Data_Ready
+		UART1_Read
+	UART1_Write_Text
+		UART1_Write
